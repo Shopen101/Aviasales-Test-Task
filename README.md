@@ -15,4 +15,4 @@
 ### BackEnd:
 * Aviasales API
 
-## Ссылка на рабочее приложение: /
+## Ссылка на рабочее приложение: https://shopen101.github.io/Aviasales-Test-Task/
