@@ -20,7 +20,14 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: theme.palette.background.paper,
             borderRadius: 10,
         },
-        checkBox: {},
+        CheckIcon: {
+            color: '#2196F3',
+            padding: '0',
+            position: 'absolute',
+            top: '7px',
+            left: '11px',
+            width: '16px',
+        },
         icon: {
             borderRadius: 2,
             width: 20,
@@ -68,10 +75,6 @@ export const ListOfCheckBox: React.FC<propsInterface> = React.memo(
 
         let filtredTickets: { current: Iticket[] | [] } = React.useRef([])
         filtredTickets.current = []
-
-        React.useEffect(() => {
-            console.log('релоад, детка!')
-        }, [])
 
         const [transferArr, setTransferArr] = useState<Array<ItransferArr>>([
             {
@@ -145,7 +148,7 @@ export const ListOfCheckBox: React.FC<propsInterface> = React.memo(
                     const filteredTicketsTwoSort = allTickets.filter(
                         item => item.segments[1].stops.length === value - 1,
                     )
-                    
+
                     dispatch(
                         setSortedTickets(
                             Array.from(
@@ -167,49 +170,37 @@ export const ListOfCheckBox: React.FC<propsInterface> = React.memo(
             }
         }
 
-        return (
-            <List className={classes.root}>
-                {transferArr.map((item, index) => {
-                    const labelId = `checkbox-list-label-${item.name}`
+        const transferArMap = transferArr.map((item, index) => {
+            const labelId = `checkbox-list-label-${item.name}`
 
-                    return (
-                        <ListItem
-                            key={`${item.name}`}
-                            role={undefined}
-                            dense
-                            button
-                            className={classes.listItem}
-                            onClick={() => handleToggle(item, index)}>
-                            <ListItemIcon className={classes.ListPadding}>
-                                <Checkbox
-                                    checked={item.checked}
-                                    className={classes.checkBox}
-                                    edge="start"
-                                    disableRipple
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                    checkedIcon={
-                                        <span className={clsx(classes.icon, classes.checkedIcon)}>
-                                            <CheckIcon
-                                                style={{
-                                                    color: '#2196F3',
-                                                    padding: '0',
-                                                    position: 'absolute',
-                                                    top: '7px',
-                                                    left: '11px',
-                                                    width: '16px',
-                                                }}
-                                            />
-                                        </span>
-                                    }
-                                    icon={<span className={classes.icon} />}
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={`${item.name}`} />
-                        </ListItem>
-                    )
-                })}
-            </List>
-        )
+            return (
+                <ListItem
+                    key={`${item.name}`}
+                    role={undefined}
+                    dense
+                    button
+                    className={classes.listItem}
+                    onClick={() => handleToggle(item, index)}>
+                    <ListItemIcon className={classes.ListPadding}>
+                        <Checkbox
+                            checked={item.checked}
+                            edge="start"
+                            disableRipple
+                            inputProps={{ 'aria-labelledby': labelId }}
+                            checkedIcon={
+                                <span className={clsx(classes.icon, classes.checkedIcon)}>
+                                    <CheckIcon className={classes.CheckIcon} />
+                                </span>
+                            }
+                            icon={<span className={classes.icon} />}
+                        />
+                    </ListItemIcon>
+                    <ListItemText id={labelId} primary={`${item.name}`} />
+                </ListItem>
+            )
+        })
+
+        return <List className={classes.root}>{transferArMap}</List>
     },
     (prevProps, nextProps) => {
         if (JSON.stringify(prevProps.allTickets) !== JSON.stringify(nextProps.allTickets)) {

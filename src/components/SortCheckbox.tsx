@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 )
 
-export const SortCheckbox: React.FC = (): React.ReactElement => {
+export const SortCheckbox: React.FC = React.memo((): React.ReactElement => {
     const classes = useStyles()
     const allTickets = useSelector(selectTickets)
 
@@ -39,4 +39,4 @@ export const SortCheckbox: React.FC = (): React.ReactElement => {
             <ListOfCheckBox allTickets={allTickets} />
         </Paper>
     )
-}
+})

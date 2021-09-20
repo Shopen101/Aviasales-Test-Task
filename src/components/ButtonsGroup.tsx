@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }))
 
-export const ButtonsGroup: React.FC = (): React.ReactElement => {
+export const ButtonsGroup: React.FC = React.memo((): React.ReactElement => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const tickets = useSelector(selectSortedTickets)
@@ -106,7 +106,7 @@ export const ButtonsGroup: React.FC = (): React.ReactElement => {
             const avgPrice = Math.round(
                 tickets.reduce((sum, item) => (sum = sum + item.price), 0) / tickets.length,
             )
-            
+
             const optimalFromPriceTickets: Iticket[] = tickets
                 .filter(item => item.price < avgPrice / 2)
                 .sort((ticket1: Iticket, ticket2: Iticket): number => {
@@ -124,6 +124,10 @@ export const ButtonsGroup: React.FC = (): React.ReactElement => {
         }
     }
 
+    const handleSortBtnClickCheap = () => handleSortBtnClick('cheap')
+    const handleSortBtnClickFast = () => handleSortBtnClick('fast')
+    const handleSortBtnClickOpti = () => handleSortBtnClick('optimal')
+
     return (
         <div className={classes.root}>
             <AntTabs
@@ -132,13 +136,13 @@ export const ButtonsGroup: React.FC = (): React.ReactElement => {
                 onChange={handleChange}
                 aria-label="ant example">
                 <AntTab
-                    onClick={() => handleSortBtnClick('cheap')}
+                    onClick={handleSortBtnClickCheap}
                     className={classes.leftBdrs}
                     label="САМЫЙ ДЕШЁВЫЙ"
                 />
-                <AntTab onClick={() => handleSortBtnClick('fast')} label="САМЫЙ БЫСТРЫЙ" />
+                <AntTab onClick={handleSortBtnClickFast} label="САМЫЙ БЫСТРЫЙ" />
                 <AntTab
-                    onClick={() => handleSortBtnClick('optimal')}
+                    onClick={handleSortBtnClickOpti}
                     className={classes.rightBdrs}
                     label="ОПТИМАЛЬНЫЙ"
                 />
@@ -146,4 +150,4 @@ export const ButtonsGroup: React.FC = (): React.ReactElement => {
             <Typography className={classes.padding} />
         </div>
     )
-}
+})
