@@ -21,6 +21,7 @@ import { SortCheckbox } from './components/SortCheckbox'
 import { Ticket } from './components/Ticket'
 import { ButtonsGroup } from './components/ButtonsGroup'
 import { ShowFiveMore } from './components/ShowFiveMore'
+import { LogoAviasales } from './components/LogoAviasales'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 )
+// TODO: найти плагин для автоимпорта
 
 function App() {
     const classes = useStyles()
@@ -59,9 +61,7 @@ function App() {
                 <Container maxWidth="md" className={classes.root}>
                     <Grid container spacing={2}>
                         <Grid item container justifyContent="center" xs={12}>
-                            <Box mt={3}>
-                                <img src={logo} alt="logo Aviasales" />
-                            </Box>
+                            <LogoAviasales />
                         </Grid>
                         <Grid item xs={4}>
                             <SortCheckbox />

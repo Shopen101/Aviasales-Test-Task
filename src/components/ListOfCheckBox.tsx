@@ -175,8 +175,7 @@ export const ListOfCheckBox: React.FC<propsInterface> = React.memo(
 
             return (
                 <ListItem
-                    key={`${item.name}`}
-                    role={undefined}
+                    key={item.name}
                     dense
                     button
                     className={classes.listItem}

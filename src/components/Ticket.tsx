@@ -55,11 +55,10 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
         },
         infoBlockData: {
-            width: '110px'
-        }
+            width: '110px',
+        },
     }),
 )
-
 
 interface Isegment {
     origin: string
@@ -74,63 +73,64 @@ interface TicketProps {
     segments: Isegment[]
 }
 
-export const Ticket: React.FC<TicketProps> = ({
-    price,
-    segments,
-}: TicketProps): React.ReactElement => {
-    const classes = useStyles()
+export const Ticket: React.FC<TicketProps> = React.memo(
+    ({ price, segments }: TicketProps): React.ReactElement => {
+        const classes = useStyles()
 
-    return (
-        <Paper className={classes.paper}>
-            <div className={classes.header}>
-                <div>
-                    <Typography className={classes.price}>{formatter.format(price)} Р</Typography>
+        return (
+            <Paper className={classes.paper}>
+                <div className={classes.header}>
+                    <div>
+                        <Typography className={classes.price}>
+                            {formatter.format(price)} Р
+                        </Typography>
+                    </div>
+                    <div>
+                        <img
+                            src={`//pics.avs.io/99/36/${getRandomNum(1, 9)}.png`}
+                            alt="avia company logo"
+                        />
+                    </div>
                 </div>
                 <div>
-                    <img
-                        src={`//pics.avs.io/99/36/${getRandomNum(1, 9)}.png`}
-                        alt="avia company logo"
-                    />
+                    {segments.map((segment, index) => (
+                        <Box
+                            key={`${new Date(
+                                segment.duration,
+                            )}__${new Date().toString()}___${getRandomNum(0, 1000)}__${index}`}
+                            mb={2}
+                            className={classes.infoBlock}>
+                            <div className={classes.infoBlockData}>
+                                <Typography className={classes.wayText}>
+                                    {segment.origin} - {segment.destination}
+                                </Typography>
+                                <Typography className={classes.timeText}>
+                                    {formatDateToHoursAndMinutes(segment.date)} -{' '}
+                                    {formatOfFinishTime(segment.date, segment.duration)}
+                                </Typography>
+                            </div>
+                            <div className={classes.infoBlockData}>
+                                <Typography className={classes.wayText}>В ПУТИ</Typography>
+                                <Typography className={classes.timeText}>
+                                    {formatDurationToHoursAndMinutes(segment?.duration)}
+                                </Typography>
+                            </div>
+                            <div className={classes.infoBlockData}>
+                                <Typography className={classes.wayText}>
+                                    {Number(segment.stops?.length) > 1
+                                        ? `${segment.stops?.length} ПЕРЕСАДКИ`
+                                        : Number(segment.stops?.length) < 1
+                                        ? 'БЕЗ ПЕРЕСАДОК'
+                                        : `${segment.stops?.length} ПЕРЕСАДКА`}
+                                </Typography>
+                                <Typography className={classes.timeText}>
+                                    {segment.stops?.join(', ')}
+                                </Typography>
+                            </div>
+                        </Box>
+                    ))}
                 </div>
-            </div>
-            <div>
-                {segments.map((segment, index) => (
-                    <Box
-                        key={`${new Date(
-                            segment.duration,
-                        )}__${new Date().toString()}___${getRandomNum(0, 1000)}__${index}`}
-                        mb={2}
-                        className={classes.infoBlock}>
-                        <div className={classes.infoBlockData}>
-                            <Typography className={classes.wayText}>
-                                {segment.origin} - {segment.destination}
-                            </Typography>
-                            <Typography className={classes.timeText}>
-                                {formatDateToHoursAndMinutes(segment.date)} -{' '}
-                                {formatOfFinishTime(segment.date, segment.duration)}
-                            </Typography>
-                        </div>
-                        <div className={classes.infoBlockData}>
-                            <Typography className={classes.wayText}>В ПУТИ</Typography>
-                            <Typography className={classes.timeText}>
-                                {formatDurationToHoursAndMinutes(segment?.duration)}
-                            </Typography>
-                        </div>
-                        <div className={classes.infoBlockData}>
-                            <Typography className={classes.wayText}>
-                                {Number(segment.stops?.length) > 1
-                                    ? `${segment.stops?.length} ПЕРЕСАДКИ`
-                                    : Number(segment.stops?.length) < 1
-                                    ? 'БЕЗ ПЕРЕСАДОК'
-                                    : `${segment.stops?.length} ПЕРЕСАДКА`}
-                            </Typography>
-                            <Typography className={classes.timeText}>
-                                {segment.stops?.join(', ')}
-                            </Typography>
-                        </div>
-                    </Box>
-                ))}
-            </div>
-        </Paper>
-    )
-}
+            </Paper>
+        )
+    },
+)
